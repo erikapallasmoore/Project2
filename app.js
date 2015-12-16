@@ -20,6 +20,24 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
+
+app.get('/', function(req, res) {
+	db.place.findAll().then(function(places){
+		res.render('index', {places: places});
+	});
+});
+
+app.post('/', function(req, res) {
+
+	var newPlace = {
+		address: req.body.address
+	}
+
+	db.place.create(newPlace).then(function() {
+		res.redirect('/');
+	});
+});
+
 app.use(function(request, response, next) {
   request.session.lastPage = request.header('Referer');
   response.locals.lastPage = request.session.lastPage;
