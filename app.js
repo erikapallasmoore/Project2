@@ -20,7 +20,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
-
+/////////////map/////////////////
 app.get('/', function(req, res) {
 	db.place.findAll().then(function(places){
 		res.render('index', {places: places});
@@ -38,12 +38,16 @@ app.post('/', function(req, res) {
 	});
 });
 
+app.get('/map', function(req, res){
+	res.render('map');
+});
+
 app.use(function(request, response, next) {
   request.session.lastPage = request.header('Referer');
   response.locals.lastPage = request.session.lastPage;
   next();
 });
-
+//////////////////// Instagram Login ///////////////////
 app.use(passport.initialize());
 app.use(passport.session());
 
