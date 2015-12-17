@@ -3,7 +3,8 @@
 
 <div class="container-fluid" "bodybg">
 <div class="row">
-	<div class="article grid_4"><% if (typeof alerts !== 'undefined') { %>
+	<div class="article grid_4">
+<% if (typeof alerts !== 'undefined') { %>
   <% for (key in alerts) { %>
     <% alerts[key].forEach(function(thisMsg){ %>
         <div class="alert alert-<%= key %>"><%= thisMsg %></div>
@@ -11,10 +12,15 @@
   <% } %>
 <% } %>
 <div class="container text-center">
-<h1>Insta Search Test!</h1>
-
-<a href="/auth/login/instagram" class="btn btn-warning">Login with Instagram</a>
-
+<h1>This is a header for Project 2!</h1>
+<%
+console.log(currentUser);
+%>
+<% if(!currentUser){ %>
+	<a href="/auth/login/instagram" class="btn btn-warning">Login with Instagram</a>
+<% } else { %>
+	<a href="/auth/logout" class="btn btn-warning">Logout</a>
+<% } %>
 </div>
 
 
@@ -36,16 +42,23 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAP-LkapVsWeJQmhYZmkDde-VqU1mx58S0&callback=initMap">
     </script>
 
-<!-- ///////////////////////////////////////////////////////// -->
+<!-- ///////////////////search test////////////////////////////////////// -->
 
+<h1>Movie Test Search</h1>
 
+<form action="/movies" method="GET" role="form">
+  <legend>Search for Movies</legend>
 
-
- 
+  <div class="form-group">
+    <label for="">Search</label>
+    <input type="text" class="form-control" id="" placeholder="Movie Search" name="q">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
     
 
 
-
+<!-- ///////////////////////// content test ////////////////////// -->
     <div class="container text-center">
       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
         
@@ -61,11 +74,16 @@
    
       </div>
 <!-- //////////// footer below ///////////////// -->
+
+
+
+
+
       <div class="row">
       	  <div class="col-xs-12">
       	  <hr>
       	 
-      	 <h2>insta footer</h2>
+      	 <h2>Contact</h2>
       	     <hr>
       	 </div>
       </div>
@@ -80,9 +98,10 @@
     <div class="container">
      
       <div class="row text-center">
-        <i class="fa fa-twitter fa-3x fa-pulse"></i>
-        <i class="fa fa-facebook fa-3x fa-pulse"></i>
-        <i class="fa fa-linkedin fa-3x fa-pulse"></i>
+         <h6 id="iconrow"><a href="http://erikapallasmoore.github.io/Project1/" target="_blank" class="contacticon"><i class="fa fa-github-square"></i></a> <a href="http://instagram.com/erikapallasmoore/" class="contacticon" target="_blank"><i class="fa fa-instagram"></i></a> <a href="https://twitter.com/veganPMA" class="contacticon" target="_blank"><i class="fa fa-twitter-square"></i></a> <a href="https://www.linkedin.com/in/erikapallasmoore" class="contacticon" target="_blank"><i class="fa fa-linkedin-square"></i></a></h6>
+                <p class="contactInfo"><a href="http://erikapallasmoore.github.io/Project1/"><p class="contactInfo">erikapallasmoore.github.io/Project1/</a></p>
         <h5><small>&copy; Copyright 2015 All Rights Reserved</small></h5>
       </div>
     </div>
+
+   

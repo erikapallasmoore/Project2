@@ -7,12 +7,12 @@ module.exports = {
       usernameField: 'email'
     },
     function(email, password, done) {
-      db.user.find({where: {email: email}}).then(function(user) {
+      db.userinfo.find({where: {email: email}}).then(function(user) {
         if (user) {
-          user.checkPassword(password, function(err, result) {
+          userinfo.checkPassword(password, function(err, result) {
             if (err) return done(err);
             if (result) {
-              done(null, user.get());
+              done(null, userinfo.get());
             } else {
               done(null, false, {message: 'Invalid password'});
             }
@@ -23,12 +23,14 @@ module.exports = {
       });
     }
   ),
-  instagramStrategy: new InstagramStrategy({
+  instagramStrategy : new InstagramStrategy(
+    {
       clientID: process.env.INSTAGRAM_APP_ID,
       clientSecret: process.env.INSTAGRAM_APP_SECRET,
       callbackURL: process.env.BASE_URL + '/auth/callback/instagram/'
     },
     function(accessToken, refreshToken, profile, done) {
+      console.log('my Profile',profile);
       db.provider.find({
         where: {
           pid: profile.id,
@@ -36,41 +38,43 @@ module.exports = {
         },
         include: [db.userinfo]
       }).then(function(provider) {
-        if (provider && provider.user) {
+        console.log('provider is ', provider);
+        if (provider && provider.userinfo) {
           provider.token = accessToken;
           provider.save().then(function() {
-            console.log('here', provider.user.get());
-            done(null, provider.user.get());
+            done(null, provider.userinfo.get());
           });
         } else {
+          console.log('no provider');
           var user = profile.username;
+          var name = profile.displayName.replace('\\','');
           db.userinfo.findOrCreate({
-            where: {user: user}
-          }).spread(function(user, created) {
+            where: {user: user},
+            defaults: {name: name}
+          }).spread(function(userinfo, created) {
+            console.log(userinfo, created);
             if (created) {
-              user.createProvider({
+              userinfo.createProvider({
                 pid: profile.id,
                 token: accessToken,
                 type: profile.provider
               }).then(function() {
-                console.log('there', user.get());
-                done(null, user.get());
+                done(null, userinfo.get());
               })
             } else {
-              console.log('this');
-              done(null, false, {message: 'You already signed up with this email address. Please login'});
+              done(null, false, {message: 'You already signed up with this Instagram account. Please login'});
             }
           });
         }
       });
     }
   ),
-  serializeUser: function(user, done) {
-    done(null, user.id);
+  serializeUser: function(userinfo, done) {
+    done(null, userinfo.id);
   },
   deserializeUser: function(id, done) {
-    db.userinfo.findById(id).then(function(user) {
-      done(null, user.get());
+    db.userinfo.findById(id).then(function(userinfo) {
+      done(null, userinfo.get());
     }).catch(done);
   }
 }

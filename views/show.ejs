@@ -1,0 +1,12 @@
+<% var img = (movie.Poster != 'N/A' ? movie.Poster : 'http://placehold.it/300x461') %>
+<h1><%= movie.Title %>
+  <small><%= movie.Year %></small>
+</h1>
+
+<a href="<%= '/movies/?q=' + q %>" class="btn btn-primary">&larr; Back to Search</a>
+
+<div class="well">
+  <p><%= movie.Plot %></p>
+  <img src="<%=img%>">
+</div>
+

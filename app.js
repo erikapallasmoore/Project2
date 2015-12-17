@@ -7,6 +7,7 @@ var flash = require('connect-flash');
 var db = require('./models');
 var passport = require('passport');
 var strategies = require('./config/strategies');
+var api = require('instagram-node').instagram();
 var	app = express();
 
 app.set('view engine', 'ejs');
@@ -20,6 +21,27 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
+//////////////////// Instagram Login ///////////////////
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(strategies.localStrategy);
+passport.use(strategies.instagramStrategy);
+
+passport.serializeUser(strategies.serializeUser);
+passport.deserializeUser(strategies.deserializeUser);
+
+app.use(function(req,res,next){
+	console.log('req.user is', req.user);
+  res.locals.currentUser = req.user;
+  res.locals.alerts = req.flash();
+  next();
+});
+
+
+// // ************instagram signin*******************************
+// app.get('/auth/instagram', passport.authenticate('instagram'));
+
 /////////////map/////////////////
 app.get('/', function(req, res) {
 	db.place.findAll().then(function(places){
@@ -47,20 +69,30 @@ app.use(function(request, response, next) {
   response.locals.lastPage = request.session.lastPage;
   next();
 });
-//////////////////// Instagram Login ///////////////////
-app.use(passport.initialize());
-app.use(passport.session());
 
-passport.use(strategies.localStrategy);
-passport.use(strategies.instagramStrategy);
+///////////Search////////////////
 
-passport.serializeUser(strategies.serializeUser);
-passport.deserializeUser(strategies.deserializeUser);
 
-app.use(function(req,res,next){
-  res.locals.currentUser = req.user;
-  res.locals.alerts = req.flash();
-  next();
+app.get('/movies', function(request, response) {
+  var query = request.query.q;
+  requestModule('http://www.omdbapi.com/?s=' + query, function(err, resp, body) {
+    var data = JSON.parse(body);
+    if (!err && response.statusCode === 200 && data.Search) {
+      response.render('movies', {movies: data.Search, q: query});
+    } else {
+      response.render('error');
+    }
+  });
+});
+
+
+app.get('/movies/:imdbID', function(request, response) {
+  // res.send(req.params.imdbID);
+  var searchQuery = request.query.q ? request.query.q : '';
+  var imdbID = request.params.imdbID;
+  requestModule('http://www.omdbapi.com/?i=' + imdbID, function(err, resp, body) {
+    response.render('show', {movie: JSON.parse(body), q: searchQuery});
+  });
 });
 
 app.use('/', require('./controllers/index'));

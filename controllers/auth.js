@@ -55,31 +55,33 @@ router.route('/login')
     })(req, res);
   });
 
-router.get('/login/:provider', function(req, res) {
+router.get('/login/:provider', function(req, res){
   switch(req.params.provider){
     case 'instagram':
       passport.authenticate(
         req.params.provider,
-        {scope: ['public_content']}
-      )(req, res);
+        {scope: ['basic', 'public_content', 'comments']}
+      )(req,res);
       break;
+    default:
+      console.log('Not Supported');
   }
 });
 
-router.get('/callback/:provider', function(req, res) {
-  passport.authenticate(req.params.provider, function(err, user, info) {
-    console.log('user', user);
+router.get('/callback/:provider', function(req, res){
+  console.log('provider is', req.params.provider);
+  passport.authenticate(req.params.provider, function(err, user, info){
+    console.log('user is', user);
     if (err) throw err;
-    if (user) {
-      console.log(req.login);
-      req.login(user, function(err) {
-        if (err) throw err;
+    if(user) {
+      req.login(user, function(err){
+        if(err) throw err;
         req.flash('success', 'You are now logged in with ' + req.params.provider);
         res.redirect('/');
       });
     } else {
-      req.flash('danger', 'Error');
-      res.redirect('/auth/login');
+      req.flash('danger', 'Something very bad happened!');
+      res.redirect('/');
     }
   })(req, res);
 });
