@@ -42,7 +42,8 @@ app.get('/instagram', function(request, response) {
 	response.render('instagram');
 });
 
-///////////////Instagram Search Test ////////////////////////
+/////////////////////////////////////Instagram Search Test ////////////////////////////////////
+///////////////working - displays all instagram tag names associated with the search////////////
 
 app.get('/instagram/search', function(request, response) {
     var query = request.query.search;
@@ -64,17 +65,49 @@ app.get('/instagram/search', function(request, response) {
     });
 });
 
+///////below code is working but instagram API is depricated////////
 
-app.get('/movies/:imdbID', function(request, response) {
-  // res.send(req.params.imdbID);
-  var searchQuery = request.query.q ? request.query.q : '';
-  var imdbID = request.params.imdbID;
-  requestModule('https://api.instagram.com/v1/tags/search?q=snowy&access_token=ACCESS-TOKEN' + imdbID, function(err, resp, body) {
-    response.render('show', {insta: JSON.parse(body), q: searchQuery});
-  });
-});
+// app.get('/instagram/search', function(request, response) {
+//     var query = request.query.search;
+
+//     var token;
+//     db.provider.findOne().then(function(provider) {
+//         token = provider.token;
+
+//         var url = 'https://api.instagram.com/v1/tags/' + query + '/media/recent?access_token=' + token + '&min_tag_id=1387332980547';
+//         requestModule(url, function(err, resp, body) {
+//             var data = JSON.parse(body);
+//             console.log(data)
+//             if (!err && resp.statusCode === 200) {
+//               // response.render('images', {tags: data.data});
+//               response.send(data)
+//             } else {
+//               response.render('error');
+//             }
+//         });
+//     });
+// });
 
 
+// app.get('/instagram/search/:id', function(request, response) {
+
+//   var searchQuery = request.query.q ? request.query.q : '';
+//   var imdbID = request.params.imdbID;
+//   requestModule('https://api.instagram.com/v1/tags/search?q=' +  + user.id, function(err, resp, body) {
+//     response.render('show', {insta: JSON.parse(body), q: searchQuery});
+//   });
+// });
+
+// router.get("/:id/archive/:idx", function(req, res) {
+//     if (req.user.id == req.params.id) {
+//         var userId = req.params.id;
+//         var photoId = req.params.idx;
+//         db.user.findById(userId).then(function(user) {
+//             db.image.findById({
+//                 where: {
+//                     id: photoId,
+//                     userId: userId
+//                 }
 
 
 /////////////map/////////////////
