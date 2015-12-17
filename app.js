@@ -25,7 +25,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(strategies.localStrategy);
+//passport.use(strategies.localStrategy);
 passport.use(strategies.instagramStrategy);
 
 passport.serializeUser(strategies.serializeUser);
