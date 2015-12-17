@@ -7,7 +7,9 @@ var flash = require('connect-flash');
 var db = require('./models');
 var passport = require('passport');
 var strategies = require('./config/strategies');
-var api = require('instagram-node').instagram();
+var instagram = require('instagram-node').instagram();
+var client_id = process.env.INSTAGRAM_APP_ID;
+var cleint_secret = process.env.INSTAGRAM_APP_SECRET
 var	app = express();
 
 app.set('view engine', 'ejs');
@@ -32,7 +34,7 @@ passport.serializeUser(strategies.serializeUser);
 passport.deserializeUser(strategies.deserializeUser);
 
 app.use(function(req,res,next){
-	console.log('req.user is', req.user);
+	// console.log('req.user is', req.user);
   res.locals.currentUser = req.user;
   res.locals.alerts = req.flash();
   next();
@@ -47,23 +49,58 @@ app.get('/instagram', function(request, response) {
 
 app.get('/instagram/search', function(request, response) {
     var query = request.query.search;
-
+    var lat = request.query.latitude;
+    var lng = request.query.longitude;
     var token;
     db.provider.findOne().then(function(provider) {
         token = provider.token;
 
-        var url = 'https://api.instagram.com/v1/tags/search?q=' + query + '&access_token=' + token;
+        var url = 'https://api.instagram.com/v1/media/search?lat=' + lat +'&lng='+ lng + '&distance=5000&access_token=' + process.env.INSTAGRAM_TOKEN;
+    console.log(url);
         requestModule(url, function(err, resp, body) {
             var data = JSON.parse(body);
             console.log(data)
             if (!err && resp.statusCode === 200) {
-              response.render('images', {tags: data.data});
+              response.send(data)
+              // response.render('images', {tags: data.data});
+              // for reference - https://api.instagram.com/v1/media/search?lat=48.858844&lng=2.294351&access_token=ACCESS-TOKEN
             } else {
               response.render('error');
             }
         });
     });
+    // instagram.tag_media_recent(request.query.serach, function(err, medias, pagination){
+    //   console.log(medias)
+    // })
 });
+
+app.get('/api', function(request, response) {
+    var query = request.query.search;
+    var lat = request.query.latitude;
+    var lng = request.query.longitude;
+    var token;
+    db.provider.findOne().then(function(provider) {
+        token = provider.token;
+                   var url = 'https://api.instagram.com/v1/media/search?lat=47.6079313&lng=-122.33601179999998&distance=5000&access_token=190598825.2abce53.77ed7791dab7429880a63c2ec08218f8'
+    console.log(url);
+        requestModule(url, function(err, resp, body) {
+            var data = JSON.parse(body);
+            console.log(data)
+            if (!err && resp.statusCode === 200) {
+              response.send(data)
+              // response.render('images', {tags: data.data});
+              // for reference - https://api.instagram.com/v1/media/search?lat=48.858844&lng=2.294351&access_token=ACCESS-TOKEN
+            } else {
+              response.render('error');
+            }
+        });
+    });
+    // instagram.tag_media_recent(request.query.serach, function(err, medias, pagination){
+    //   console.log(medias)
+    // })
+});
+
+
 
 ///////below code is working but instagram API is depricated////////
 
