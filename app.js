@@ -38,9 +38,44 @@ app.use(function(req,res,next){
   next();
 });
 
+app.get('/instagram', function(request, response) {
+	response.render('instagram');
+});
 
-// // ************instagram signin*******************************
-// app.get('/auth/instagram', passport.authenticate('instagram'));
+///////////////Instagram Search Test ////////////////////////
+
+app.get('/instagram/search', function(request, response) {
+    var query = request.query.search;
+
+    var token;
+    db.provider.findOne().then(function(provider) {
+        token = provider.token;
+
+        var url = 'https://api.instagram.com/v1/tags/search?q=' + query + '&access_token=' + token;
+        requestModule(url, function(err, resp, body) {
+            var data = JSON.parse(body);
+            console.log(data)
+            if (!err && resp.statusCode === 200) {
+              response.render('images', {tags: data.data});
+            } else {
+              response.render('error');
+            }
+        });
+    });
+});
+
+
+app.get('/movies/:imdbID', function(request, response) {
+  // res.send(req.params.imdbID);
+  var searchQuery = request.query.q ? request.query.q : '';
+  var imdbID = request.params.imdbID;
+  requestModule('https://api.instagram.com/v1/tags/search?q=snowy&access_token=ACCESS-TOKEN' + imdbID, function(err, resp, body) {
+    response.render('show', {insta: JSON.parse(body), q: searchQuery});
+  });
+});
+
+
+
 
 /////////////map/////////////////
 app.get('/', function(req, res) {
