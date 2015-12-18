@@ -29,4 +29,7 @@ var addMarker = function(lat, lng, name) {
 		map: globalGoogleMap,
 		title: name
 	});
+
+	return googleMarker;
 };
+

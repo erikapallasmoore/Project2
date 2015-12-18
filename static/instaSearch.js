@@ -12,9 +12,15 @@ $(document).ready(function() {
 		    	console.log(response.responseJSON.data);
 		    	// foreach over the data
 		    	// create a marker for each lat/long
+		    	var images = response.responseJSON.data;
+		    	images.forEach(function(markerData) {
+					var marker = addMarker(markerData.location.latitude, markerData.location.longitude, markerData.location.name);
 
-		    	response.responseJSON.data.forEach(function(markerData) {
-					addMarker(markerData.location.latitude, markerData.location.longitude, markerData.location.name)
+					google.maps.event.addListener(marker, 'click', function(e) {
+	   					window.location.href = markerData.link;
+   					 	console.log('CLICKED IT!')
+					});
+
 		    	});
 		    }
 		});
