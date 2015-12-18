@@ -61,8 +61,9 @@ app.get('/instagram/search', function(request, response) {
             var data = JSON.parse(body);
             console.log(data)
             if (!err && resp.statusCode === 200) {
-              response.send(data)
-              // response.render('images', {tags: data.data});
+              //response.send(data)
+
+               response.render('images', {tags: data.data});
               // for reference - https://api.instagram.com/v1/media/search?lat=48.858844&lng=2.294351&access_token=ACCESS-TOKEN
             } else {
               response.render('error');
