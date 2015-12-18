@@ -4,7 +4,7 @@
  <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
     <link href='https://fonts.googleapis.com/css?family=Exo+2:400,200,700,800' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Neuton:800' rel='stylesheet' type='text/css'>    
     <!--     ///////////// Icon font /////////////// -->
@@ -34,7 +34,7 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       
-    	<form class="navbar-form navbar-left" action="/instagram/search" method="GET" role="search">
+    	<form id="instaSearch" class="navbar-form navbar-left" action="/instagram/search" method="GET" role="search">
 
 	<div class="form-group">
 		<input type="text" class="form-control" id="" placeholder="Instagram Search" name="search">
@@ -54,13 +54,13 @@
 </nav>
 <%- body %>
 
-
+	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
     <!-- jQuery -->
     <script src="http://code.jquery.com/jquery.js"></script>
     <!-- Bootstrap JavaScript -->
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
  	<script type="text/javascript" src="/geolocater.js"></script>
+ 	<script type="text/javascript" src="/instaSearch.js"></script>
 
-<script src="script.js"></script>
 </body>
 </html>

@@ -1,7 +1,8 @@
 <% tags.forEach(function(tag) { %>
 <div class="well">
-  <%= tag.tags %>
- <img src="<%= tag.type %>">
+  <%= tag.location.latitude %>
+  <%= tag.location.longitude %>
+ <img src="<%= tag.link %>">
 </div>
 <% }); %>
 

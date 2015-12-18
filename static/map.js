@@ -1,5 +1,8 @@
+var globalGoogleMap;
+
 var initMap = function() {
-	var map = new google.maps.Map(document.getElementById('map'), {
+	console.log("I'm being called!");
+	globalGoogleMap = new google.maps.Map(document.getElementById('map'), {
 		center: {lat: -34.397, lng: 150.644},
 		zoom: 12
 	});
@@ -8,16 +11,22 @@ var initMap = function() {
 
 			var initialLoc = new google.maps.LatLng(position.coords.latitude,
 				position.coords.longitude);
-			map.setCenter(initialLoc);
+			globalGoogleMap.setCenter(initialLoc);
 
 			markers.forEach(function(marker) {
-				var latLng = new google.maps.LatLng(marker.lat, marker.lng);
-				var googleMarker = new google.maps.Marker({
-					position: latLng,
-					map: map,
-					title: marker.name
-				});
+				addMarker(marker.lat, marker.lng, marker.name)
 			});
 		});
 	}
+
+	console.log("I finished!");
 }
+
+var addMarker = function(lat, lng, name) {
+	var latLng = new google.maps.LatLng(lat, lng);
+	var googleMarker = new google.maps.Marker({
+		position: latLng,
+		map: globalGoogleMap,
+		title: name
+	});
+};

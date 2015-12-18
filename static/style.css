@@ -9,7 +9,11 @@
 #map {
 	height: 500px;
 	width: 800px;
+
 }
+
+#leaflet { height: 180px; }
+
 
 .contacticon {
     font-size: 2em;

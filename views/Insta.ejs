@@ -1,0 +1,7 @@
+<h1>Search Results</h1>
+
+<% movies.forEach(function(movie) { %>
+<div class="well">
+  <a href="<%= '/insta/' + movie.imdbID + '/?q=' + q %>"><h2><%= movie.Title %></h2></a>
+</div>
+<% }); %>
