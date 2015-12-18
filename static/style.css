@@ -9,13 +9,17 @@
 #map {
 	height: 500px;
 	width: 800px;
-	margin: auto 0;
+	margin: 0 auto;
+}
+
+h1 {
+font-family: 'Fugaz One', cursive;
 
 }
 
-
-
-
+h2 {
+	font-family: 'Fugaz One', cursive;
+}
 .contacticon {
     font-size: 2em;
 }
